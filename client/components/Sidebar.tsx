@@ -4,8 +4,8 @@ import {
   Settings,
   HardDrive,
   LogOut,
-  Cloud,
   Share2,
+  Bell,
 } from "lucide-react";
 import { useAuth } from "@/lib/authContext";
 import { cn } from "@/lib/utils";
@@ -54,14 +54,13 @@ export function Sidebar({ onClose }: SidebarProps) {
 
   return (
     <div className="flex flex-col h-full bg-card border-r border-border">
-      {/* Logo */}
-      <div className="px-6 py-6 border-b border-border/50">
-        <div className="flex items-center gap-3">
-          <div className="inline-flex items-center justify-center w-9 h-9 bg-primary/10 rounded">
-            <Cloud className="w-5 h-5 text-primary" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h2 className="font-bold text-sm text-foreground">CloudVault</h2>
+      {/* Notifications Section */}
+      <div className="px-4 py-6 border-b border-border/50">
+        <div className="flex items-center gap-2 p-3 bg-primary/10 rounded-lg border border-primary/30">
+          <Bell className="w-4 h-4 text-primary flex-shrink-0" />
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold text-primary">No alerts</p>
+            <p className="text-xs text-primary/70">Everything is up to date</p>
           </div>
         </div>
       </div>

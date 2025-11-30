@@ -1,6 +1,6 @@
 import { useAuth } from "@/lib/authContext";
 import { useNavigate } from "react-router-dom";
-import { Menu, Settings, LogOut, User, Bell, HelpCircle } from "lucide-react";
+import { Menu, Settings, LogOut, User, Bell } from "lucide-react";
 import { useState } from "react";
 
 interface TopBarProps {
@@ -23,11 +23,11 @@ export function TopBar({ onMenuClick, menuOpen }: TopBarProps) {
 
   return (
     <header className="sticky top-0 z-30 h-16 bg-card border-b border-border">
-      <div className="h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <div className="h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
         {/* Left - Menu button (mobile) */}
         <button
           onClick={onMenuClick}
-          className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground"
+          className="lg:hidden p-2 rounded hover:bg-muted/40 transition-colors text-muted-foreground"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -36,69 +36,66 @@ export function TopBar({ onMenuClick, menuOpen }: TopBarProps) {
         <div className="flex-1 hidden sm:block" />
 
         {/* Right - Actions */}
-        <div className="flex items-center gap-3">
-          {/* Help button */}
-          <button className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hidden sm:block">
-            <HelpCircle className="w-5 h-5" />
+        <div className="flex items-center gap-1">
+          {/* Notifications button */}
+          <button className="relative p-2 rounded hover:bg-muted/40 transition-colors text-muted-foreground">
+            <Bell className="w-5 h-5" />
           </button>
 
-          {/* Notifications button */}
-          <button className="relative p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground">
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full" />
-          </button>
+          {/* Divider */}
+          <div className="w-px h-6 bg-border/50 mx-1" />
 
           {/* Profile dropdown */}
           <div className="relative">
             <button
               onClick={() => setShowProfile(!showProfile)}
-              className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-muted transition-colors"
+              className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-muted/40 transition-colors"
             >
-              <div className="w-8 h-8 bg-gradient-to-br from-primary/80 to-primary rounded-lg flex items-center justify-center text-xs font-semibold text-white">
+              <div className="w-7 h-7 bg-primary/15 text-primary rounded text-xs font-semibold flex items-center justify-center border border-primary/30">
                 {userInitials}
               </div>
-              <span className="text-sm font-medium text-foreground hidden sm:block">
+              <span className="text-sm text-foreground hidden sm:block">
                 {user?.email?.split("@")[0]}
               </span>
             </button>
 
             {/* Profile Menu */}
             {showProfile && (
-              <div className="absolute right-0 top-full mt-2 w-56 bg-card border border-border rounded-lg shadow-xl overflow-hidden animate-fadeIn z-40">
-                <div className="px-4 py-4 border-b border-border/50 bg-secondary/10">
-                  <p className="text-xs text-muted-foreground font-medium">
-                    SIGNED IN AS
+              <div className="absolute right-0 top-full mt-2 w-48 bg-card border border-border rounded-lg shadow-xl overflow-hidden animate-fadeIn z-40">
+                <div className="px-4 py-3 border-b border-border/50 bg-muted/20">
+                  <p className="text-xs text-muted-foreground font-semibold">
+                    ACCOUNT
                   </p>
-                  <p className="text-sm font-semibold text-foreground mt-1 break-all">
+                  <p className="text-sm text-foreground mt-1 break-all truncate">
                     {user?.email}
                   </p>
                 </div>
 
-                <div className="p-2">
+                <div className="py-2">
                   <button
                     onClick={() => {
                       navigate("/settings");
                       setShowProfile(false);
                     }}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-foreground hover:bg-muted rounded-lg transition-colors"
+                    className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-muted/40 transition-colors flex items-center gap-3"
                   >
                     <User className="w-4 h-4" />
-                    Account Settings
+                    Account
                   </button>
                   <button
                     onClick={() => {
                       navigate("/settings");
                       setShowProfile(false);
                     }}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-foreground hover:bg-muted rounded-lg transition-colors"
+                    className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-muted/40 transition-colors flex items-center gap-3"
                   >
                     <Settings className="w-4 h-4" />
-                    Preferences
+                    Settings
                   </button>
                   <div className="border-t border-border/50 my-2" />
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                    className="w-full px-4 py-2 text-left text-sm text-destructive hover:bg-destructive/10 transition-colors flex items-center gap-3"
                   >
                     <LogOut className="w-4 h-4" />
                     Sign out

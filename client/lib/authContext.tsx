@@ -9,7 +9,7 @@ import {
   updatePassword,
   deleteUser,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "./firebase";
 
 interface UserData {

@@ -26,13 +26,42 @@ export default function Login() {
       await login(email, password);
       navigate("/dashboard");
     } catch (err: any) {
-      setError(
-        err.message.includes("user-not-found")
-          ? "User not found"
-          : err.message.includes("wrong-password")
-            ? "Incorrect password"
-            : "Failed to login. Please try again."
-      );
+      const errorCode = err.code || "";
+      const errorMessage = err.message || "";
+
+      let userFriendlyError = "Failed to login. Please try again.";
+
+      if (
+        errorCode.includes("user-not-found") ||
+        errorMessage.includes("USER_NOT_FOUND") ||
+        errorMessage.includes("user-not-found")
+      ) {
+        userFriendlyError = "Email not found. Please check or register a new account.";
+      } else if (
+        errorCode.includes("wrong-password") ||
+        errorMessage.includes("INVALID_PASSWORD") ||
+        errorMessage.includes("wrong-password")
+      ) {
+        userFriendlyError = "Incorrect password. Please try again.";
+      } else if (
+        errorCode.includes("invalid-email") ||
+        errorMessage.includes("INVALID_EMAIL")
+      ) {
+        userFriendlyError = "Please enter a valid email address.";
+      } else if (
+        errorCode.includes("too-many-requests") ||
+        errorMessage.includes("TOO_MANY_ATTEMPTS_TRY_LATER")
+      ) {
+        userFriendlyError =
+          "Too many failed login attempts. Please try again later or reset your password.";
+      } else if (
+        errorMessage.includes("INVALID_LOGIN_CREDENTIALS") ||
+        errorMessage.includes("INVALID_EMAIL_OR_PASSWORD")
+      ) {
+        userFriendlyError = "Email or password is incorrect.";
+      }
+
+      setError(userFriendlyError);
     } finally {
       setLoading(false);
     }

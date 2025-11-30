@@ -36,6 +36,14 @@ const App = () => (
             <Route path="/share/:token" element={<SharedFile />} />
 
             <Route
+              path="/welcome"
+              element={
+                <ProtectedRoute>
+                  <Welcome />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/dashboard"
               element={
                 <ProtectedRoute>

@@ -111,6 +111,9 @@ export const uploadFile = async (
 
     console.log("[Upload] Metadata saved to Firestore:", fileDoc.id);
 
+    // Update storage used in user document
+    await updateUserStorageUsed(userId);
+
     return {
       id: fileDoc.id,
       userId: userId,

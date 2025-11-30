@@ -13,6 +13,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import Welcome from "./pages/Welcome";
 import Settings from "./pages/Settings";
 import ResetPassword from "./pages/ResetPassword";
 import SharedFile from "./pages/SharedFile";
@@ -34,6 +35,14 @@ const App = () => (
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/share/:token" element={<SharedFile />} />
 
+            <Route
+              path="/welcome"
+              element={
+                <ProtectedRoute>
+                  <Welcome />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/dashboard"
               element={

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/lib/authContext";
-import { ArrowRight, AlertCircle } from "lucide-react";
+import { ArrowRight, AlertCircle, Cloud, Eye, EyeOff } from "lucide-react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -69,36 +70,33 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl" />
-      </div>
-
-      <div className="w-full max-w-md relative z-10">
-        {/* Logo & Branding */}
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      <div className="w-full max-w-md">
+        {/* Logo */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-primary to-primary/80 rounded-xl mb-6 shadow-lg shadow-primary/20">
-            <svg
-              className="w-7 h-7 text-primary-foreground"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
-            </svg>
+          <div className="inline-flex items-center justify-center w-10 h-10 bg-primary/15 rounded mb-4">
+            <Cloud className="w-6 h-6 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold text-foreground">CloudVault</h1>
-          <p className="text-muted-foreground mt-2 text-sm font-medium">
-            Secure cloud storage for everyone
+          <h1 className="text-xl font-bold text-foreground">CloudVault</h1>
+          <p className="text-xs text-muted-foreground mt-1">
+            Enterprise cloud storage
           </p>
         </div>
 
         {/* Login Card */}
-        <div className="card p-8 mb-6">
+        <div className="card p-8 mb-8">
+          <div className="mb-8">
+            <h2 className="text-lg font-bold text-foreground">Sign in</h2>
+            <p className="text-xs text-muted-foreground mt-1">
+              Enter your credentials to continue
+            </p>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email */}
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">
-                Email address
+              <label className="block text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">
+                Email
               </label>
               <input
                 type="email"
@@ -111,40 +109,56 @@ export default function Login() {
               />
             </div>
 
+            {/* Password */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-semibold text-foreground">
+                <label className="text-xs font-semibold text-foreground uppercase tracking-wide">
                   Password
                 </label>
                 <Link
                   to="/reset-password"
-                  className="text-xs text-primary hover:text-primary/80 transition-colors"
+                  className="text-xs text-primary hover:text-primary/80 transition-colors font-medium"
                 >
                   Forgot?
                 </Link>
               </div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input-field"
-                placeholder="••••••••"
-                disabled={loading}
-                autoComplete="current-password"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="input-field pr-10"
+                  placeholder="••••••••"
+                  disabled={loading}
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
             </div>
 
+            {/* Error Message */}
             {error && (
-              <div className="p-3.5 bg-destructive/10 border border-destructive/20 rounded-lg flex items-start gap-3">
+              <div className="p-3.5 bg-destructive/10 border border-destructive/30 rounded-lg flex items-start gap-3 animate-fadeIn">
                 <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-destructive">{error}</p>
+                <p className="text-xs text-destructive">{error}</p>
               </div>
             )}
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full flex items-center justify-center gap-2"
+              className="w-full px-4 py-2.5 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? "Signing in..." : "Sign in"}
               {!loading && <ArrowRight className="w-4 h-4" />}
@@ -154,7 +168,7 @@ export default function Login() {
 
         {/* Sign up link */}
         <div className="text-center">
-          <p className="text-muted-foreground text-sm">
+          <p className="text-xs text-muted-foreground">
             Don't have an account?{" "}
             <Link
               to="/register"

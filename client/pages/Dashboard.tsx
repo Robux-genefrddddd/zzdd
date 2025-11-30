@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Header } from "@/components/Header";
+import { Layout } from "@/components/Layout";
 import { FileCard } from "@/components/FileCard";
 import { ShareModal } from "@/components/ShareModal";
 import { useAuth } from "@/lib/authContext";
@@ -20,6 +20,7 @@ import {
   Files,
   Clock,
   ArrowUpRight,
+  Plus,
 } from "lucide-react";
 
 export default function Dashboard() {

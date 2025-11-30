@@ -253,7 +253,7 @@
 /* Utility for smooth scale animation */
 @layer utilities {
   .scale-98 {
-    @apply scale-98;
+    transform: scale(0.98);
   }
 }
 

@@ -134,9 +134,7 @@ export default function Dashboard() {
     try {
       for (let i = 0; i < droppedFiles.length; i++) {
         const file = droppedFiles[i];
-        setUploadProgress(
-          Math.round(((i + 1) / droppedFiles.length) * 100)
-        );
+        setUploadProgress(Math.round(((i + 1) / droppedFiles.length) * 100));
         await uploadFile(user.uid, file);
       }
 
@@ -374,9 +372,7 @@ export default function Dashboard() {
             {/* Files Table */}
             <div className="space-y-4">
               <div>
-                <h2 className="text-lg font-semibold text-foreground">
-                  Files
-                </h2>
+                <h2 className="text-lg font-semibold text-foreground">Files</h2>
                 <p className="text-xs text-muted-foreground mt-1">
                   {files.length} file{files.length !== 1 ? "s" : ""}
                 </p>

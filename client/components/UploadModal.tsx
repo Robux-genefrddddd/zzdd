@@ -242,7 +242,9 @@ export function UploadModal({
                   max="365"
                   value={expiryDays || ""}
                   onChange={(e) =>
-                    setExpiryDays(e.target.value ? parseInt(e.target.value) : null)
+                    setExpiryDays(
+                      e.target.value ? parseInt(e.target.value) : null,
+                    )
                   }
                   placeholder="Optional"
                   className="input-field text-xs"

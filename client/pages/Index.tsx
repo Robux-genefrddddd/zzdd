@@ -149,8 +149,7 @@ export default function Index() {
               {
                 icon: Users,
                 title: "Shareable",
-                description:
-                  "Easy sharing with expiring links and permissions",
+                description: "Easy sharing with expiring links and permissions",
               },
             ].map((feature, index) => {
               const Icon = feature.icon;

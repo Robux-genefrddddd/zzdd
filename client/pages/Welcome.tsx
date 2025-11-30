@@ -1,13 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/authContext";
 import { useEffect } from "react";
-import {
-  Cloud,
-  Upload,
-  Share2,
-  Settings,
-  ArrowRight,
-} from "lucide-react";
+import { Cloud, Upload, Share2, Settings, ArrowRight } from "lucide-react";
 
 export default function Welcome() {
   const { user } = useAuth();
@@ -23,17 +17,20 @@ export default function Welcome() {
     {
       icon: Upload,
       title: "Upload Files",
-      description: "Start by uploading your files to CloudVault. Support any file type up to 5GB.",
+      description:
+        "Start by uploading your files to CloudVault. Support any file type up to 5GB.",
     },
     {
       icon: Share2,
       title: "Share Securely",
-      description: "Create time-limited share links for your files with expiry dates.",
+      description:
+        "Create time-limited share links for your files with expiry dates.",
     },
     {
       icon: Settings,
       title: "Manage Settings",
-      description: "Configure security, tokens, and storage preferences in settings.",
+      description:
+        "Configure security, tokens, and storage preferences in settings.",
     },
   ];
 

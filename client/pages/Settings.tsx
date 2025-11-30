@@ -270,8 +270,9 @@ export default function Settings() {
                         className="h-full bg-primary rounded-full"
                         style={{
                           width: `${Math.min(
-                            (userData.storageUsed / userData.storageLimit) * 100,
-                            100
+                            (userData.storageUsed / userData.storageLimit) *
+                              100,
+                            100,
                           )}%`,
                         }}
                       />
@@ -285,7 +286,7 @@ export default function Settings() {
                       </p>
                       <p className="text-lg font-bold text-foreground">
                         {(userData.storageUsed / (1024 * 1024 * 1024)).toFixed(
-                          1
+                          1,
                         )}{" "}
                         GB
                       </p>
@@ -296,7 +297,7 @@ export default function Settings() {
                       </p>
                       <p className="text-lg font-bold text-foreground">
                         {(userData.storageLimit / (1024 * 1024 * 1024)).toFixed(
-                          0
+                          0,
                         )}{" "}
                         GB
                       </p>

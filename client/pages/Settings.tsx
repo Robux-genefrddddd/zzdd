@@ -104,42 +104,40 @@ export default function Settings() {
       <div className="h-full flex flex-col bg-background">
         <div className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="max-w-4xl mx-auto space-y-8">
-            {/* Page Header */}
+            {/* Header */}
             <div>
-              <h1 className="text-4xl font-bold text-foreground">Settings</h1>
-              <p className="text-muted-foreground mt-2">
-                Manage your account, security, and preferences
+              <h1 className="text-2xl font-bold text-foreground">Settings</h1>
+              <p className="text-sm text-muted-foreground mt-1">
+                Manage your account and preferences
               </p>
             </div>
 
-            {/* Account Security Section */}
+            {/* Security Section */}
             <section className="card p-8">
-              <div className="flex items-start gap-4 mb-8">
-                <div className="p-3 bg-primary/10 rounded-lg flex-shrink-0">
-                  <Shield className="w-6 h-6 text-primary" />
-                </div>
+              <div className="flex items-center gap-3 mb-8">
+                <Shield className="w-5 h-5 text-primary" />
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground">
-                    Account Security
+                  <h2 className="text-lg font-bold text-foreground">
+                    Password
                   </h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Secure your account with a strong password
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Update your password
                   </p>
                 </div>
               </div>
 
               <form onSubmit={handleChangePassword} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-semibold text-foreground mb-3">
-                      New Password
+                    <label className="block text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">
+                      New password
                     </label>
                     <div className="relative">
                       <input
                         type={showPassword ? "text" : "password"}
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
-                        className="w-full px-4 py-3 bg-input border border-border rounded-lg text-foreground placeholder:text-muted-foreground/50 transition-all duration-200 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                        className="input-field pr-10"
                         placeholder="••••••••"
                         disabled={passwordLoading}
                       />
@@ -149,23 +147,23 @@ export default function Settings() {
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {showPassword ? (
-                          <EyeOff className="w-5 h-5" />
+                          <EyeOff className="w-4 h-4" />
                         ) : (
-                          <Eye className="w-5 h-5" />
+                          <Eye className="w-4 h-4" />
                         )}
                       </button>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-foreground mb-3">
-                      Confirm Password
+                    <label className="block text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">
+                      Confirm password
                     </label>
                     <input
                       type={showPassword ? "text" : "password"}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full px-4 py-3 bg-input border border-border rounded-lg text-foreground placeholder:text-muted-foreground/50 transition-all duration-200 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      className="input-field"
                       placeholder="••••••••"
                       disabled={passwordLoading}
                     />
@@ -173,23 +171,23 @@ export default function Settings() {
                 </div>
 
                 {passwordError && (
-                  <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-destructive">{passwordError}</p>
+                  <div className="p-3.5 bg-destructive/10 border border-destructive/30 rounded-lg flex items-start gap-3">
+                    <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-destructive">{passwordError}</p>
                   </div>
                 )}
 
                 {passwordSuccess && (
-                  <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-green-400">{passwordSuccess}</p>
+                  <div className="p-3.5 bg-green-500/10 border border-green-500/30 rounded-lg flex items-start gap-3">
+                    <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-green-400">{passwordSuccess}</p>
                   </div>
                 )}
 
                 <button
                   type="submit"
                   disabled={passwordLoading}
-                  className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-200 active:scale-95 disabled:opacity-50"
+                  className="px-4 py-2.5 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-all duration-200 active:scale-95 disabled:opacity-50"
                 >
                   {passwordLoading ? "Updating..." : "Update Password"}
                 </button>
@@ -198,34 +196,32 @@ export default function Settings() {
 
             {/* Share Token Section */}
             <section className="card p-8">
-              <div className="flex items-start gap-4 mb-8">
-                <div className="p-3 bg-primary/10 rounded-lg flex-shrink-0">
-                  <Key className="w-6 h-6 text-primary" />
-                </div>
+              <div className="flex items-center gap-3 mb-8">
+                <Key className="w-5 h-5 text-primary" />
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground">
+                  <h2 className="text-lg font-bold text-foreground">
                     Share Token
                   </h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Your unique token for creating shared links. Keep this private.
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Token for creating shared links
                   </p>
                 </div>
               </div>
 
               <div className="space-y-4">
-                <div className="bg-secondary/30 rounded-lg p-4 border border-border/50 flex items-center justify-between group">
-                  <code className="text-sm font-mono text-muted-foreground/80 truncate flex-1 select-all">
+                <div className="bg-muted/20 border border-border/50 rounded p-3 flex items-center gap-3">
+                  <code className="text-xs text-muted-foreground font-mono flex-1 truncate select-all">
                     {shareToken}
                   </code>
                   <button
                     onClick={handleCopyToken}
                     disabled={tokenLoading}
-                    className="ml-3 p-2 hover:bg-muted rounded-lg transition-colors flex-shrink-0"
+                    className="p-2 rounded hover:bg-muted/40 transition-colors flex-shrink-0"
                   >
                     {tokenCopied ? (
-                      <CheckCircle className="w-5 h-5 text-green-400" />
+                      <CheckCircle className="w-4 h-4 text-green-400" />
                     ) : (
-                      <Copy className="w-5 h-5 text-muted-foreground" />
+                      <Copy className="w-4 h-4 text-muted-foreground" />
                     )}
                   </button>
                 </div>
@@ -233,7 +229,7 @@ export default function Settings() {
                 <button
                   onClick={handleRegenerateToken}
                   disabled={tokenLoading}
-                  className="px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/80 transition-all duration-200 active:scale-95 disabled:opacity-50"
+                  className="px-4 py-2.5 bg-secondary text-secondary-foreground rounded-md font-medium hover:bg-secondary/80 transition-all duration-200 active:scale-95 disabled:opacity-50"
                 >
                   {tokenLoading ? "Regenerating..." : "Regenerate Token"}
                 </button>
@@ -243,16 +239,14 @@ export default function Settings() {
             {/* Storage Section */}
             {userData && (
               <section className="card p-8">
-                <div className="flex items-start gap-4 mb-8">
-                  <div className="p-3 bg-primary/10 rounded-lg flex-shrink-0">
-                    <HardDrive className="w-6 h-6 text-primary" />
-                  </div>
+                <div className="flex items-center gap-3 mb-8">
+                  <HardDrive className="w-5 h-5 text-primary" />
                   <div>
-                    <h2 className="text-2xl font-bold text-foreground">
+                    <h2 className="text-lg font-bold text-foreground">
                       Storage
                     </h2>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Monitor your storage usage
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Monitor your usage
                     </p>
                   </div>
                 </div>
@@ -260,10 +254,10 @@ export default function Settings() {
                 <div className="space-y-6">
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <p className="text-sm font-semibold text-foreground">
-                        Used Capacity
+                      <p className="text-sm font-medium text-foreground">
+                        Used capacity
                       </p>
-                      <p className="text-sm font-semibold text-foreground">
+                      <p className="text-sm text-muted-foreground">
                         {(
                           (userData.storageUsed / userData.storageLimit) *
                           100
@@ -271,9 +265,9 @@ export default function Settings() {
                         %
                       </p>
                     </div>
-                    <div className="h-3 bg-secondary rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-primary rounded-full transition-all duration-500"
+                        className="h-full bg-primary rounded-full"
                         style={{
                           width: `${Math.min(
                             (userData.storageUsed / userData.storageLimit) * 100,
@@ -284,12 +278,12 @@ export default function Settings() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-6 border-t border-border/50">
+                  <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border/50">
                     <div>
                       <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-2">
                         Used
                       </p>
-                      <p className="text-xl font-bold text-foreground">
+                      <p className="text-lg font-bold text-foreground">
                         {(userData.storageUsed / (1024 * 1024 * 1024)).toFixed(
                           1
                         )}{" "}
@@ -300,7 +294,7 @@ export default function Settings() {
                       <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-2">
                         Limit
                       </p>
-                      <p className="text-xl font-bold text-foreground">
+                      <p className="text-lg font-bold text-foreground">
                         {(userData.storageLimit / (1024 * 1024 * 1024)).toFixed(
                           0
                         )}{" "}
@@ -311,7 +305,7 @@ export default function Settings() {
                       <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-2">
                         Available
                       </p>
-                      <p className="text-xl font-bold text-foreground">
+                      <p className="text-lg font-bold text-foreground">
                         {(
                           (userData.storageLimit - userData.storageUsed) /
                           (1024 * 1024 * 1024)
@@ -326,21 +320,19 @@ export default function Settings() {
 
             {/* Danger Zone */}
             <section className="card p-8 border-destructive/20 bg-destructive/5">
-              <div className="flex items-start gap-4 mb-8">
-                <div className="p-3 bg-destructive/10 rounded-lg flex-shrink-0">
-                  <Trash2 className="w-6 h-6 text-destructive" />
-                </div>
+              <div className="flex items-center gap-3 mb-8">
+                <Trash2 className="w-5 h-5 text-destructive" />
                 <div>
-                  <h2 className="text-2xl font-bold text-destructive">
+                  <h2 className="text-lg font-bold text-destructive">
                     Danger Zone
                   </h2>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     Irreversible actions
                   </p>
                 </div>
               </div>
 
-              <p className="text-sm text-muted-foreground mb-6">
+              <p className="text-xs text-muted-foreground mb-6">
                 Once you delete your account, there is no going back. All your
                 files will be permanently deleted.
               </p>
@@ -348,12 +340,12 @@ export default function Settings() {
               {!deleteConfirm ? (
                 <button
                   onClick={() => setDeleteConfirm(true)}
-                  className="px-6 py-3 bg-destructive text-destructive-foreground rounded-lg font-medium hover:bg-destructive/90 transition-all duration-200 active:scale-95 disabled:opacity-50"
+                  className="px-4 py-2.5 bg-destructive text-destructive-foreground rounded-md font-medium hover:bg-destructive/90 transition-all duration-200 active:scale-95 disabled:opacity-50"
                 >
                   Delete Account
                 </button>
               ) : (
-                <div className="space-y-4 p-6 bg-background/50 border border-destructive/20 rounded-lg">
+                <div className="space-y-4 p-4 bg-background/50 border border-destructive/30 rounded-lg">
                   <p className="text-sm font-semibold text-destructive">
                     Are you absolutely sure? This action cannot be undone.
                   </p>
@@ -361,13 +353,13 @@ export default function Settings() {
                     <button
                       onClick={handleDeleteAccount}
                       disabled={deleteLoading}
-                      className="flex-1 px-6 py-3 bg-destructive text-destructive-foreground rounded-lg font-medium hover:bg-destructive/90 transition-all duration-200 disabled:opacity-50"
+                      className="flex-1 px-4 py-2.5 bg-destructive text-destructive-foreground rounded-md font-medium hover:bg-destructive/90 transition-all duration-200 disabled:opacity-50"
                     >
-                      {deleteLoading ? "Deleting..." : "Yes, delete my account"}
+                      {deleteLoading ? "Deleting..." : "Yes, delete"}
                     </button>
                     <button
                       onClick={() => setDeleteConfirm(false)}
-                      className="flex-1 px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/80 transition-all duration-200"
+                      className="flex-1 px-4 py-2.5 bg-secondary text-secondary-foreground rounded-md font-medium hover:bg-secondary/80 transition-all duration-200"
                     >
                       Cancel
                     </button>

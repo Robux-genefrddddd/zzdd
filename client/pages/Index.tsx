@@ -1,7 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/authContext";
 import { useEffect } from "react";
-import { Cloud, Lock, Zap, Shield, Users } from "lucide-react";
+import {
+  Lock,
+  Zap,
+  Shield,
+  Users,
+  CheckCircle,
+  ArrowRight,
+  Cloud,
+} from "lucide-react";
 
 export default function Index() {
   const { user } = useAuth();
@@ -14,14 +22,20 @@ export default function Index() {
   }, [user, navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-card border-b border-border sticky top-0 z-50">
+      <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <div className="inline-flex items-center justify-center w-10 h-10 bg-primary rounded-lg">
-                <Cloud className="w-5 h-5 text-primary-foreground" />
+              <div className="inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-lg">
+                <svg
+                  className="w-5 h-5 text-primary-foreground"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
+                </svg>
               </div>
               <h1 className="text-xl font-bold text-foreground">CloudVault</h1>
             </div>
@@ -29,25 +43,25 @@ export default function Index() {
             <nav className="hidden md:flex items-center gap-8">
               <a
                 href="#features"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Features
               </a>
               <a
                 href="#security"
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 Security
               </a>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3 pl-8 border-l border-border">
                 <Link
                   to="/login"
-                  className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
-                  Login
+                  Sign in
                 </Link>
-                <Link to="/register" className="btn-primary text-sm py-2 px-4">
-                  Sign Up
+                <Link to="/register" className="btn-primary py-2 px-4 text-sm">
+                  Get Started
                 </Link>
               </div>
             </nav>
@@ -55,63 +69,87 @@ export default function Index() {
             <div className="md:hidden flex items-center gap-2">
               <Link
                 to="/login"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="text-sm text-muted-foreground hover:text-foreground font-medium"
               >
-                Login
+                Sign in
               </Link>
               <Link to="/register" className="btn-primary text-sm py-2 px-4">
-                Sign Up
+                Get Started
               </Link>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-        <div className="text-center max-w-3xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-            Your secure cloud storage, simplified
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-            Upload, share, and manage your files with confidence.
-            Enterprise-grade security, intuitive interface, unlimited potential.
-          </p>
+      {/* Hero Section */}
+      <section className="relative py-20 md:py-32 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-1/2 -right-1/4 w-full h-full bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-3xl" />
+        </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Link
-              to="/register"
-              className="btn-primary py-3 px-6 text-base font-medium"
-            >
-              Get Started Free
-            </Link>
-            <Link
-              to="/login"
-              className="btn-secondary py-3 px-6 text-base font-medium"
-            >
-              Already have an account?
-            </Link>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full mb-6">
+              <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+              <span className="text-xs font-semibold text-primary">
+                Trusted by thousands
+              </span>
+            </div>
 
-          <div className="relative">
-            <div className="card-base p-8 border-2 border-border shadow-lg">
-              <div className="aspect-video bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg border border-border flex items-center justify-center">
-                <Cloud className="w-16 h-16 text-primary/20" />
+            <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 leading-tight">
+              Your secure cloud storage,
+              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                {" "}
+                simplified
+              </span>
+            </h1>
+
+            <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-2xl">
+              Upload, share, and manage your files with confidence.
+              Enterprise-grade security, intuitive interface, unlimited
+              potential.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+              <Link
+                to="/register"
+                className="btn-primary py-3 px-8 text-base font-semibold flex items-center justify-center gap-2"
+              >
+                Get Started Free
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/login"
+                className="btn-secondary py-3 px-8 text-base font-semibold"
+              >
+                Sign In
+              </Link>
+            </div>
+
+            {/* Hero Image Placeholder */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="card p-2 border-2 border-border">
+                <div className="aspect-video bg-gradient-to-br from-primary/20 via-secondary to-background rounded-lg flex items-center justify-center overflow-hidden relative">
+                  <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+                  <Cloud className="w-24 h-24 text-primary/30" />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section id="features" className="bg-card border-t border-border py-20">
+      {/* Features Section */}
+      <section id="features" className="py-20 border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
               Everything you need
-            </h3>
-            <p className="text-lg text-muted-foreground">
-              Powerful features designed for simplicity and security
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Powerful features designed for simplicity, security, and
+              collaboration
             </p>
           </div>
 
@@ -133,7 +171,7 @@ export default function Index() {
                 icon: Users,
                 title: "Easy Sharing",
                 description:
-                  "Create secure share links with expiration dates and access control",
+                  "Create secure share links with expiration dates and granular access control",
               },
               {
                 icon: Lock,
@@ -148,22 +186,22 @@ export default function Index() {
                   "Access your files from anywhere, anytime, on any device",
               },
               {
-                icon: Zap,
+                icon: CheckCircle,
                 title: "Reliable Uptime",
                 description:
                   "99.9% uptime guarantee with automatic backups and redundancy",
               },
-            ].map((feature) => {
+            ].map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <div key={feature.title} className="card-base p-6">
-                  <div className="p-3 bg-secondary rounded-lg w-fit mb-4">
+                <div key={index} className="card-interactive p-8">
+                  <div className="p-3 bg-primary/10 rounded-lg w-fit mb-4">
                     <Icon className="w-6 h-6 text-primary" />
                   </div>
-                  <h4 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="text-lg font-semibold text-foreground mb-3">
                     {feature.title}
-                  </h4>
-                  <p className="text-muted-foreground text-sm">
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
@@ -173,17 +211,18 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Security */}
-      <section id="security" className="py-20">
+      {/* Security Section */}
+      <section id="security" className="py-20 border-t border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
                 Security is our priority
-              </h3>
-              <p className="text-lg text-muted-foreground mb-6">
+              </h2>
+              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 We implement industry-leading security measures to protect your
-                files and privacy.
+                files and privacy. Every file is encrypted, every connection is
+                secure.
               </p>
 
               <ul className="space-y-4">
@@ -192,83 +231,106 @@ export default function Index() {
                   "Two-factor authentication",
                   "Zero-knowledge architecture",
                   "Regular security audits",
-                  "GDPR compliant",
+                  "GDPR & privacy compliant",
                   "No backdoors or secret access",
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-3">
-                    <Shield className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span className="text-foreground">{item}</span>
+                ].map((item, index) => (
+                  <li key={index} className="flex items-center gap-3">
+                    <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                    <span className="text-foreground font-medium">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="card-base p-8 border-2 border-border">
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Lock className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Encrypted</h4>
-                    <p className="text-sm text-muted-foreground">
-                      All data encrypted in transit and at rest
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Protected</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Advanced access controls and monitoring
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <Users className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Private</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Your files are yours alone, completely private
-                    </p>
-                  </div>
-                </div>
+            <div className="card p-8 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: Lock,
+                    title: "Encrypted",
+                    description: "All data encrypted in transit and at rest",
+                  },
+                  {
+                    icon: Shield,
+                    title: "Protected",
+                    description: "Advanced access controls and monitoring",
+                  },
+                  {
+                    icon: Users,
+                    title: "Private",
+                    description:
+                      "Your files are yours alone, completely private",
+                  },
+                ].map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={index} className="flex items-start gap-4">
+                      <div className="p-3 bg-primary/10 rounded-lg flex-shrink-0">
+                        <Icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-1">
+                          {item.title}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-primary text-primary-foreground py-16">
+      {/* CTA Section */}
+      <section className="py-20 border-t border-border">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h3 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to secure your files?
-          </h3>
-          <p className="text-lg opacity-90 mb-8">
-            Join thousands of users who trust CloudVault for their data storage
-            needs
-          </p>
-          <Link
-            to="/register"
-            className="inline-flex items-center justify-center px-8 py-3 bg-primary-foreground text-primary font-semibold rounded-lg hover:opacity-90 transition-opacity"
-          >
-            Create Free Account
-          </Link>
+          <div className="card p-12 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Ready to secure your files?
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Join thousands of users who trust CloudVault for their data
+              storage needs
+            </p>
+            <Link
+              to="/register"
+              className="inline-flex items-center justify-center px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-all duration-200 gap-2"
+            >
+              Create Free Account
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-card border-t border-border py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-muted-foreground">
-          <p>&copy; 2024 CloudVault. All rights reserved.</p>
+      <footer className="border-t border-border py-8 mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+                <Cloud className="w-4 h-4 text-primary-foreground" />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                © 2024 CloudVault. All rights reserved.
+              </p>
+            </div>
+            <div className="flex gap-6 text-sm text-muted-foreground">
+              <a href="#" className="hover:text-foreground transition-colors">
+                Privacy
+              </a>
+              <a href="#" className="hover:text-foreground transition-colors">
+                Terms
+              </a>
+              <a href="#" className="hover:text-foreground transition-colors">
+                Contact
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

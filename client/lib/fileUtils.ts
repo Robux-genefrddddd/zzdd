@@ -39,7 +39,12 @@ export const uploadFile = async (
 ): Promise<FileMetadata> => {
   // Auth check - CRITICAL
   if (!userId || userId.trim() === "") {
-    throw new Error("User not authenticated. Please login and try again.");
+    throw new Error("User not authenticated");
+  }
+
+  // Validate userId format (Firebase UIDs are non-empty strings)
+  if (typeof userId !== "string" || userId.length === 0) {
+    throw new Error("Invalid user authentication state");
   }
 
   // File validation
@@ -106,6 +111,9 @@ export const uploadFile = async (
 
     console.log("[Upload] Metadata saved to Firestore:", fileDoc.id);
 
+    // Update storage used in user document
+    await updateUserStorageUsed(userId);
+
     return {
       id: fileDoc.id,
       userId: userId,
@@ -124,7 +132,7 @@ export const uploadFile = async (
     // Detailed error messages for troubleshooting
     if (error.code === "storage/unauthorized") {
       throw new Error(
-        "Upload permission denied. Check Storage Rules and authentication.",
+        "Upload permission denied. Check Storage Rules, authentication, and CORS configuration.",
       );
     } else if (error.code === "storage/retry-limit-exceeded") {
       throw new Error(
@@ -138,9 +146,16 @@ export const uploadFile = async (
       );
     } else if (error.code === "storage/bucket-not-found") {
       throw new Error("Storage bucket not accessible. Check Firebase config.");
-    } else if (error.message?.includes("Network")) {
+    } else if (
+      error.message?.includes("Network") ||
+      error.message?.includes("Failed to fetch")
+    ) {
       throw new Error(
-        "Network error during upload. Check connection and CORS settings.",
+        "Network error during upload. Ensure CORS is configured and connection is active.",
+      );
+    } else if (error.message?.includes("403")) {
+      throw new Error(
+        "Access forbidden. Verify Storage Rules allow authenticated uploads.",
       );
     }
 
@@ -202,11 +217,16 @@ export const deleteFile = async (
     // Delete from Firestore
     await deleteDoc(doc(db, "users", userId, "files", fileId));
     console.log("[Delete] Metadata deleted from Firestore:", fileId);
+
+    // Recalculate storage used
+    await updateUserStorageUsed(userId);
   } catch (error: any) {
     console.error("[Delete] Error:", error);
     if (error.code === "storage/object-not-found") {
       // File already deleted from storage, just remove metadata
       await deleteDoc(doc(db, "users", userId, "files", fileId));
+      // Recalculate storage used
+      await updateUserStorageUsed(userId);
       return;
     }
     throw new Error(`Failed to delete file: ${error.message}`);
@@ -293,5 +313,43 @@ export const formatDate = (dateString: string): string => {
     });
   } catch {
     return dateString;
+  }
+};
+
+export const calculateStorageUsed = async (userId: string): Promise<number> => {
+  if (!userId || userId.trim() === "") {
+    throw new Error("User not authenticated");
+  }
+
+  try {
+    const filesRef = collection(db, "users", userId, "files");
+    const snapshot = await getDocs(query(filesRef));
+
+    let totalSize = 0;
+    snapshot.docs.forEach((doc) => {
+      const fileSize = doc.data().fileSize || 0;
+      totalSize += fileSize;
+    });
+
+    return totalSize;
+  } catch (error: any) {
+    console.error("[CalculateStorageUsed] Error:", error);
+    return 0;
+  }
+};
+
+export const updateUserStorageUsed = async (userId: string): Promise<void> => {
+  if (!userId || userId.trim() === "") {
+    throw new Error("User not authenticated");
+  }
+
+  try {
+    const storageUsed = await calculateStorageUsed(userId);
+    await updateDoc(doc(db, "users", userId), {
+      storageUsed: storageUsed,
+    });
+    console.log("[UpdateStorageUsed] Updated storage used:", storageUsed);
+  } catch (error: any) {
+    console.error("[UpdateStorageUsed] Error:", error);
   }
 };

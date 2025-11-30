@@ -9,7 +9,14 @@ import {
   updatePassword,
   deleteUser,
 } from "firebase/auth";
-import { doc, setDoc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { auth, db } from "./firebase";
 
 interface UserData {
@@ -19,7 +26,14 @@ interface UserData {
   shareToken: string;
   storageUsed: number;
   storageLimit: number;
+  plan: "free" | "pro";
 }
+
+// Storage limits per plan (in bytes)
+export const STORAGE_LIMITS = {
+  free: 1 * 1024 * 1024 * 1024, // 1 GB
+  pro: 20 * 1024 * 1024 * 1024, // 20 GB
+};
 
 interface AuthContextType {
   user: User | null;
@@ -45,17 +59,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         setUser(firebaseUser);
-        // Fetch user data from Firestore
+        // Set up real-time listener for user data
         const userDocRef = doc(db, "users", firebaseUser.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          setUserData(userDoc.data() as UserData);
-        }
+        const unsubscribeSnapshot = onSnapshot(userDocRef, (doc) => {
+          if (doc.exists()) {
+            setUserData(doc.data() as UserData);
+          }
+        });
+
+        setLoading(false);
+        return unsubscribeSnapshot;
       } else {
         setUser(null);
         setUserData(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return unsubscribe;
@@ -84,8 +102,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email: email,
         createdAt: new Date().toISOString(),
         shareToken: shareToken,
+        plan: "free", // Default to free plan
         storageUsed: 0,
-        storageLimit: 10 * 1024 * 1024 * 1024, // 10GB limit
+        storageLimit: STORAGE_LIMITS.free,
       });
 
       setUser(result.user);

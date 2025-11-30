@@ -48,7 +48,7 @@ export function ShareModal({ file, onClose }: ShareModalProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn"
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn"
       onClick={onClose}
     >
       <div
@@ -56,28 +56,33 @@ export function ShareModal({ file, onClose }: ShareModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border sticky top-0 bg-card/80 backdrop-blur-sm">
+        <div className="flex items-center justify-between p-6 border-b border-border sticky top-0 bg-card/95 backdrop-blur-sm">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary/10 rounded-lg">
+            <div className="p-2.5 bg-primary/10 rounded-lg">
               <Share2 className="w-5 h-5 text-primary" />
             </div>
             <h2 className="text-lg font-bold text-foreground">Share File</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 hover:bg-muted rounded-lg transition-colors"
+            className="p-1.5 hover:bg-muted rounded-lg transition-colors text-muted-foreground"
           >
-            <X className="w-5 h-5 text-muted-foreground" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* File Info */}
-          <div className="p-4 bg-secondary/30 rounded-lg border border-border">
-            <p className="text-xs text-muted-foreground mb-1">File</p>
+          <div className="p-4 bg-secondary/20 border border-border/50 rounded-lg">
+            <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide mb-2">
+              File
+            </p>
             <p className="font-semibold text-foreground truncate text-sm">
               {file.name}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">
+              {file.size ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : ""}
             </p>
           </div>
 
@@ -85,8 +90,8 @@ export function ShareModal({ file, onClose }: ShareModalProps) {
             <>
               {/* Expiry Selection */}
               <div>
-                <label className="block text-sm font-semibold text-foreground mb-3">
-                  <Calendar className="w-4 h-4 inline-block mr-2" />
+                <label className="block text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-primary" />
                   Link Expiry
                 </label>
                 <div className="space-y-2">
@@ -98,7 +103,7 @@ export function ShareModal({ file, onClose }: ShareModalProps) {
                   ].map((option) => (
                     <label
                       key={option.value}
-                      className="flex items-center gap-3 p-3 rounded-lg border border-border hover:bg-muted/50 cursor-pointer transition-colors"
+                      className="flex items-center gap-3 p-3.5 rounded-lg border border-border hover:bg-muted/50 cursor-pointer transition-colors group"
                     >
                       <input
                         type="radio"
@@ -108,10 +113,13 @@ export function ShareModal({ file, onClose }: ShareModalProps) {
                         onChange={(e) =>
                           setExpiryHours(parseInt(e.target.value))
                         }
-                        className="w-4 h-4"
+                        className="w-4 h-4 text-primary cursor-pointer"
                       />
-                      <span className="text-sm font-medium text-foreground">
+                      <span className="text-sm font-medium text-foreground flex-1">
                         {option.label}
+                      </span>
+                      <span className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                        Recommended
                       </span>
                     </label>
                   ))}
@@ -120,7 +128,7 @@ export function ShareModal({ file, onClose }: ShareModalProps) {
 
               {/* Info Box */}
               <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   The share link will expire after{" "}
                   <span className="font-semibold text-foreground">
                     {getExpiryText(expiryHours)}
@@ -133,7 +141,7 @@ export function ShareModal({ file, onClose }: ShareModalProps) {
               <button
                 onClick={handleCreateShare}
                 disabled={loading}
-                className="btn-primary w-full"
+                className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Creating link..." : "Create Share Link"}
               </button>
@@ -143,22 +151,24 @@ export function ShareModal({ file, onClose }: ShareModalProps) {
               {/* Share Link Display */}
               <div className="space-y-3">
                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  Share Link
+                  Your Share Link
                 </p>
-                <div className="bg-input border border-border rounded-lg p-4 flex items-start gap-3">
+                <div className="bg-input border border-border rounded-lg p-4 flex items-start gap-3 group">
                   <Link2 className="w-4 h-4 text-primary flex-shrink-0 mt-1" />
                   <input
                     type="text"
                     value={shareLink}
                     readOnly
-                    className="bg-transparent text-sm text-foreground font-mono flex-1 outline-none"
+                    className="bg-transparent text-sm text-foreground font-mono flex-1 outline-none truncate"
+                    onClick={(e) => e.currentTarget.select()}
                   />
                 </div>
               </div>
 
-              {/* Info Box */}
-              <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-                <p className="text-xs text-green-400">
+              {/* Success Message */}
+              <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                <p className="text-xs text-green-400 leading-relaxed">
                   ✓ Share link created successfully. Anyone with this link can
                   download the file.
                 </p>
@@ -167,8 +177,10 @@ export function ShareModal({ file, onClose }: ShareModalProps) {
               {/* Copy Button */}
               <button
                 onClick={copyToClipboard}
-                className={`w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-medium transition-all duration-200 ${
-                  copied ? "bg-green-500/10 text-green-400" : "btn-primary"
+                className={`w-full flex items-center justify-center gap-2 py-3 px-6 rounded-lg font-semibold transition-all duration-200 active:scale-95 ${
+                  copied
+                    ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                    : "bg-primary text-primary-foreground hover:bg-primary/90"
                 }`}
               >
                 {copied ? (
@@ -185,7 +197,10 @@ export function ShareModal({ file, onClose }: ShareModalProps) {
               </button>
 
               {/* Done Button */}
-              <button onClick={onClose} className="btn-secondary w-full">
+              <button
+                onClick={onClose}
+                className="w-full px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-semibold hover:bg-secondary/80 transition-all duration-200 active:scale-95"
+              >
                 Done
               </button>
             </>

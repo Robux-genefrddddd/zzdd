@@ -19,7 +19,14 @@ interface UserData {
   shareToken: string;
   storageUsed: number;
   storageLimit: number;
+  plan: "free" | "pro";
 }
+
+// Storage limits per plan (in bytes)
+export const STORAGE_LIMITS = {
+  free: 1 * 1024 * 1024 * 1024, // 1 GB
+  pro: 20 * 1024 * 1024 * 1024, // 20 GB
+};
 
 interface AuthContextType {
   user: User | null;

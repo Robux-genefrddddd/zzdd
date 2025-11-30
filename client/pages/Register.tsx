@@ -39,13 +39,42 @@ export default function Register() {
       await register(email, password);
       navigate("/dashboard");
     } catch (err: any) {
-      setError(
-        err.message.includes("email-already-in-use")
-          ? "Email already in use"
-          : err.message.includes("invalid-email")
-            ? "Invalid email address"
-            : "Failed to register. Please try again."
-      );
+      const errorCode = err.code || "";
+      const errorMessage = err.message || "";
+
+      let userFriendlyError = "Failed to register. Please try again.";
+
+      if (
+        errorCode.includes("email-already-in-use") ||
+        errorMessage.includes("EMAIL_EXISTS")
+      ) {
+        userFriendlyError =
+          "This email is already registered. Please login or use a different email.";
+      } else if (
+        errorCode.includes("invalid-email") ||
+        errorMessage.includes("INVALID_EMAIL")
+      ) {
+        userFriendlyError = "Please enter a valid email address.";
+      } else if (
+        errorCode.includes("weak-password") ||
+        errorMessage.includes("WEAK_PASSWORD")
+      ) {
+        userFriendlyError = "Password is too weak. Use at least 6 characters.";
+      } else if (
+        errorCode.includes("operation-not-allowed") ||
+        errorMessage.includes("OPERATION_NOT_ALLOWED")
+      ) {
+        userFriendlyError =
+          "Registration is currently disabled. Please try again later.";
+      } else if (
+        errorMessage.includes("EMAIL_EXISTS") ||
+        errorMessage.includes("email-already-in-use")
+      ) {
+        userFriendlyError =
+          "This email is already registered. Please login or use a different email.";
+      }
+
+      setError(userFriendlyError);
     } finally {
       setLoading(false);
     }

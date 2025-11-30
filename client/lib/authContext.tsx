@@ -91,8 +91,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email: email,
         createdAt: new Date().toISOString(),
         shareToken: shareToken,
+        plan: "free", // Default to free plan
         storageUsed: 0,
-        storageLimit: 10 * 1024 * 1024 * 1024, // 10GB limit
+        storageLimit: STORAGE_LIMITS.free,
       });
 
       setUser(result.user);

@@ -1,12 +1,20 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/lib/authContext";
-import { ArrowRight, AlertCircle, CheckCircle } from "lucide-react";
+import {
+  ArrowRight,
+  AlertCircle,
+  CheckCircle,
+  Cloud,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -14,6 +22,9 @@ export default function Register() {
 
   const passwordStrength =
     password.length >= 8 ? "strong" : password.length >= 6 ? "medium" : "weak";
+
+  const passwordsMatch =
+    confirmPassword && password === confirmPassword && password.length >= 6;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,12 +80,6 @@ export default function Register() {
       ) {
         userFriendlyError =
           "Registration is currently disabled. Please try again later.";
-      } else if (
-        errorMessage.includes("EMAIL_EXISTS") ||
-        errorMessage.includes("email-already-in-use")
-      ) {
-        userFriendlyError =
-          "This email is already registered. Please login or use a different email.";
       }
 
       setError(userFriendlyError);
@@ -84,23 +89,18 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
-      {/* Animated background gradient */}
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
+      {/* Subtle background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
       </div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo & Branding */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-primary to-primary/80 rounded-xl mb-6 shadow-lg shadow-primary/20">
-            <svg
-              className="w-7 h-7 text-primary-foreground"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
-            </svg>
+          <div className="inline-flex items-center justify-center w-12 h-12 bg-primary rounded-lg mb-6">
+            <Cloud className="w-6 h-6 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-foreground">CloudVault</h1>
           <p className="text-muted-foreground mt-2 text-sm font-medium">
@@ -109,85 +109,120 @@ export default function Register() {
         </div>
 
         {/* Register Card */}
-        <div className="card p-8 mb-6">
+        <div className="card p-8 mb-8">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-foreground mb-2">
+              Sign up
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Create a new account to access secure cloud storage
+            </p>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Email */}
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">
+              <label className="block text-sm font-semibold text-foreground mb-3">
                 Email address
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="input-field"
+                className="w-full px-4 py-3 bg-input border border-border rounded-lg text-foreground placeholder:text-muted-foreground/50 transition-all duration-200 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 placeholder="you@example.com"
                 disabled={loading}
                 autoComplete="email"
               />
             </div>
 
+            {/* Password */}
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">
+              <label className="block text-sm font-semibold text-foreground mb-3">
                 Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input-field"
-                placeholder="••••••••"
-                disabled={loading}
-                autoComplete="new-password"
-              />
-              <div className="flex items-center gap-2 mt-2">
-                <div
-                  className={`h-1 flex-1 rounded-full transition-colors ${
-                    passwordStrength === "strong"
-                      ? "bg-green-500"
-                      : passwordStrength === "medium"
-                        ? "bg-yellow-500"
-                        : "bg-muted"
-                  }`}
-                />
-                <p className="text-xs text-muted-foreground">
-                  {password.length >= 6 ? "At least 6 characters" : ""}
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">
-                Confirm password
               </label>
               <div className="relative">
                 <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="input-field"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 bg-input border border-border rounded-lg text-foreground placeholder:text-muted-foreground/50 transition-all duration-200 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 pr-10"
                   placeholder="••••••••"
                   disabled={loading}
                   autoComplete="new-password"
                 />
-                {confirmPassword &&
-                  password === confirmPassword &&
-                  password.length >= 6 && (
-                    <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500" />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
                   )}
+                </button>
+              </div>
+
+              {/* Password Strength Indicator */}
+              {password && (
+                <div className="flex items-center gap-2 mt-3">
+                  <div className="flex-1 h-1 rounded-full overflow-hidden bg-secondary">
+                    <div
+                      className={`h-full transition-all ${
+                        passwordStrength === "strong"
+                          ? "bg-green-500 w-full"
+                          : passwordStrength === "medium"
+                            ? "bg-yellow-500 w-2/3"
+                            : "bg-muted w-1/3"
+                      }`}
+                    />
+                  </div>
+                  <span className="text-xs font-medium text-muted-foreground">
+                    {passwordStrength === "strong"
+                      ? "Strong"
+                      : passwordStrength === "medium"
+                        ? "Good"
+                        : "Weak"}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-sm font-semibold text-foreground mb-3">
+                Confirm password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-4 py-3 bg-input border border-border rounded-lg text-foreground placeholder:text-muted-foreground/50 transition-all duration-200 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 pr-10"
+                  placeholder="••••••••"
+                  disabled={loading}
+                  autoComplete="new-password"
+                />
+                {passwordsMatch && (
+                  <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500" />
+                )}
               </div>
             </div>
 
+            {/* Error Message */}
             {error && (
-              <div className="p-3.5 bg-destructive/10 border border-destructive/20 rounded-lg flex items-start gap-3">
-                <AlertCircle className="w-4 h-4 text-destructive flex-shrink-0 mt-0.5" />
+              <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg flex items-start gap-3 animate-fadeIn">
+                <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
                 <p className="text-sm text-destructive">{error}</p>
               </div>
             )}
 
+            {/* Submit Button */}
             <button
               type="submit"
-              disabled={loading}
-              className="btn-primary w-full flex items-center justify-center gap-2"
+              disabled={loading || !passwordsMatch}
+              className="w-full px-4 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? "Creating account..." : "Create account"}
               {!loading && <ArrowRight className="w-4 h-4" />}
@@ -206,6 +241,11 @@ export default function Register() {
               Sign in
             </Link>
           </p>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-12 pt-8 border-t border-border/30 text-center text-xs text-muted-foreground">
+          <p>By creating an account, you agree to our Terms of Service and Privacy Policy</p>
         </div>
       </div>
     </div>

@@ -28,6 +28,8 @@ export interface FileMetadata {
   shareToken?: string;
   shareExpiry?: string;
   isShared: boolean;
+  storagePath?: string;
+  fileId?: string;
 }
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 * 1024; // 5GB per file

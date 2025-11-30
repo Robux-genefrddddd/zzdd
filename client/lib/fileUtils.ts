@@ -129,7 +129,7 @@ export const uploadFile = async (
     // Detailed error messages for troubleshooting
     if (error.code === "storage/unauthorized") {
       throw new Error(
-        "Upload permission denied. Check Storage Rules and authentication.",
+        "Upload permission denied. Check Storage Rules, authentication, and CORS configuration.",
       );
     } else if (error.code === "storage/retry-limit-exceeded") {
       throw new Error(
@@ -143,9 +143,13 @@ export const uploadFile = async (
       );
     } else if (error.code === "storage/bucket-not-found") {
       throw new Error("Storage bucket not accessible. Check Firebase config.");
-    } else if (error.message?.includes("Network")) {
+    } else if (error.message?.includes("Network") || error.message?.includes("Failed to fetch")) {
       throw new Error(
-        "Network error during upload. Check connection and CORS settings.",
+        "Network error during upload. Ensure CORS is configured and connection is active.",
+      );
+    } else if (error.message?.includes("403")) {
+      throw new Error(
+        "Access forbidden. Verify Storage Rules allow authenticated uploads.",
       );
     }
 
